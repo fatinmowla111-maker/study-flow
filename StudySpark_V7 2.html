@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#635bff">
+<title>StudySpark V7</title>
+<style>
+:root{--bg:#f5f6ff;--card:#fff;--text:#202238;--muted:#74778d;--primary:#635bff;--accent:#ff6584;--green:#32b875;--yellow:#f2b941;--border:#e5e7f0;--shadow:0 10px 28px rgba(38,35,80,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:1120px;margin:auto;min-height:100vh}
+#welcome{position:fixed;inset:0;background:linear-gradient(135deg,#635bff,#958fff);color:#fff;z-index:100;display:flex;align-items:center;justify-content:center;padding:25px}
+.welcomeBox{text-align:center;max-width:520px}.spark{font-size:72px}.welcomeBox h1{font-size:42px;margin:5px 0}.welcomeBox p{font-size:17px;opacity:.92;line-height:1.5}.start{background:#fff;color:#635bff;padding:14px 25px;border-radius:15px;font-weight:800;font-size:17px;margin-top:12px}
+header{background:linear-gradient(135deg,var(--primary),#938dff);color:white;padding:25px 18px 21px;border-radius:0 0 28px 28px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:15px}.logo{font-size:29px;font-weight:850}.sub{opacity:.9;font-size:13px;margin-top:3px}.icon{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.18);color:#fff;font-size:19px}
+nav{display:flex;gap:7px;padding:12px 14px;position:sticky;top:0;z-index:10;background:rgba(245,246,255,.93);backdrop-filter:blur(12px)}nav button{flex:1;background:transparent;color:var(--muted);font-weight:750;padding:11px 7px;border-radius:12px}nav button.active{background:var(--card);color:var(--primary);box-shadow:var(--shadow)}
+main{padding:8px 15px 35px}.page{display:none}.page.active{display:block}
+.hero{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:20px;margin:10px 0 15px;box-shadow:var(--shadow)}.hero h1{margin:0 0 6px;font-size:26px}.hero p{margin:0;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:15px}.stat{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;box-shadow:var(--shadow)}.stat span{font-size:12px;color:var(--muted)}.stat b{font-size:24px;display:block;margin-top:4px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:15px;box-shadow:var(--shadow)}.card h2{margin:0 0 12px;font-size:19px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}.form{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:9px}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);outline:none}textarea{min-height:120px;resize:vertical}
+.primary{background:var(--primary);color:#fff;padding:12px 16px;border-radius:12px;font-weight:750}.secondary{background:#ecebff;color:var(--primary);padding:10px 14px;border-radius:11px;font-weight:750}.danger{background:#ffe8ed;color:#c63d59;padding:10px 14px;border-radius:11px;font-weight:750}
+.task{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--border)}.task:last-child{border-bottom:0}.check{width:28px;height:28px;border-radius:50%;border:2px solid #c9cad7;background:transparent;color:#fff;flex:none}.check.done{background:var(--green);border-color:var(--green)}.info{flex:1;min-width:0}.title{font-weight:750}.done{text-decoration:line-through;color:var(--muted)}.meta{font-size:12px;color:var(--muted);margin-top:4px}.actions{display:flex;gap:5px}.small{padding:8px 10px;border-radius:9px;background:#f0f0f7;color:#5d6175}
+.priority{font-size:11px;font-weight:750;padding:4px 8px;border-radius:99px}.high{background:#ffe2e7;color:#c33b57}.medium{background:#fff0c9;color:#966600}.low{background:#dcf6e9;color:#19754b}
+.progress{height:11px;border-radius:20px;background:#e8e8f2;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,var(--primary),#9d98ff);border-radius:20px}
+.calendarHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.monthTitle{font-size:21px;font-weight:800}.calBtns{display:flex;gap:5px}.calBtns button{padding:8px 11px;border-radius:9px;background:#ecebff;color:var(--primary)}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.weekday{text-align:center;color:var(--muted);font-size:11px;font-weight:750;padding:5px}.day{min-height:92px;background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:7px;overflow:hidden}.day.other{opacity:.38}.day.today{border:2px solid var(--primary)}.dayNum{font-weight:800;font-size:12px}.dot{display:block;font-size:9px;background:#ecebff;color:#5149c9;padding:3px 4px;border-radius:5px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dot.doneDot{opacity:.5;text-decoration:line-through}
+.subjects{display:flex;gap:8px;flex-wrap:wrap}.subjectChip{padding:9px 12px;border-radius:99px;background:#ecebff;color:#5149c9;font-size:13px;font-weight:750}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.note{padding:15px;border-radius:16px;background:#fff9dd;border:1px solid #f0e5a8;min-height:120px}.note h3{margin:0 0 7px;font-size:16px}.note p{margin:0;white-space:pre-wrap;font-size:13px}
+.timer{text-align:center}.time{font-size:65px;font-weight:850;margin:8px}.timerBtns{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.badge{text-align:center;padding:17px;border-radius:17px;background:#f1f0ff;border:1px solid var(--border);opacity:.4}.badge.unlocked{opacity:1;background:#fff7d8}.badge .emoji{font-size:30px}.badge b{display:block;margin-top:6px}
+.chart{height:180px;display:flex;align-items:flex-end;gap:8px;border-bottom:1px solid var(--border);padding:10px 4px}.barWrap{flex:1;text-align:center;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}.bar{width:70%;max-width:42px;background:linear-gradient(180deg,var(--primary),#aaa6ff);border-radius:7px 7px 0 0;min-height:3px}.barLabel{font-size:10px;color:var(--muted);margin-top:5px}.barValue{font-size:10px;font-weight:750;margin-bottom:3px}
+.quote{background:#f0efff;color:#5149c9;padding:14px;border-radius:14px;font-weight:700;margin-bottom:14px}
+
+.gameQuestion{font-size:24px;font-weight:850;margin:12px 0 18px}
+.gameOptions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.gameOption{padding:13px;border-radius:12px;background:var(--bg);border:1px solid var(--border);font-weight:700;text-align:left}
+.gameOption:hover{border-color:var(--primary)}
+.gameScore{display:flex;justify-content:space-between;gap:10px;margin-bottom:12px;font-weight:750}
+.feedback{padding:12px;border-radius:12px;margin-top:12px;font-weight:750}
+.correct{background:#ddf7ea;color:#19784d}.wrong{background:#ffe5e9;color:#c33b57}
+
+body.dark{--bg:#121327;--card:#1b1d34;--text:#f3f3fb;--muted:#a8aabc;--border:#30334e;--shadow:0 10px 28px rgba(0,0,0,.22)}body.dark nav{background:rgba(18,19,39,.93)}body.dark input,body.dark select,body.dark textarea{background:#15172b;color:var(--text)}body.dark .secondary,body.dark .calBtns button{background:#2b2852}body.dark .small{background:#292b41}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:15px}
+@media(max-width:850px){.stats{grid-template-columns:repeat(3,1fr)}.form{grid-template-columns:1fr 1fr}.form input:first-child{grid-column:1/-1}.form button{grid-column:1/-1}.notes{grid-template-columns:1fr 1fr}.badges{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:550px){.logo{font-size:24px}.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.notes{grid-template-columns:1fr}.badges{grid-template-columns:1fr 1fr}.day{min-height:62px;padding:5px}.dot{font-size:8px}.actions .label{display:none}.welcomeBox h1{font-size:35px}}
+</style>
+</head>
+<body>
+
+<div id="welcome"><div class="welcomeBox"><div class="spark">✨</div><h1>StudySpark</h1><p>Welcome to V7! Organize homework, plan your week, take focused study sessions, and track your progress.</p><button class="start" onclick="enterApp()">Start Studying 🚀</button></div></div>
+
+<div class="app">
+<header><div class="header"><div><div class="logo">✨ StudySpark</div><div class="sub">V7 • Your personal study space</div></div><button class="icon" id="themeBtn" onclick="toggleDark()">🌙</button></div></header>
+
+<nav>
+<button class="active" onclick="show('home',this)">🏠</button>
+<button onclick="show('tasks',this)">📚</button>
+<button onclick="show('calendar',this)">📅</button>
+<button onclick="show('notes',this)">📝</button>
+<button onclick="show('focus',this)">⏱️</button>
+<button onclick="show('statsPage',this)">📊</button>
+<button onclick="show('games',this)">🎮</button><button onclick="show('more',this)">🏆</button>
+</nav>
+
+<main>
+<section id="home" class="page active">
+<div class="hero"><h1 id="greeting">Good evening! 👋</h1><p>Ready to make some progress today?</p></div>
+<div class="quote" id="quote"></div>
+<div class="stats">
+<div class="stat"><span>📚 Total</span><b id="total">0</b></div><div class="stat"><span>⏳ To do</span><b id="todo">0</b></div><div class="stat"><span>✅ Done</span><b id="done">0</b></div><div class="stat"><span>🔥 Streak</span><b id="streak">0</b></div><div class="stat"><span>⭐ Points</span><b id="points">0</b></div>
+</div>
+<div class="grid2">
+<div class="card"><h2>⭐ Level <span id="level">1</span> • <span id="levelName">Starter</span></h2><div class="progress"><div id="levelBar" style="width:0%"></div></div><div class="meta" id="pointsText">0 / 50 points</div></div>
+<div class="card"><h2>🎯 Today</h2><div id="todayList"></div></div>
+</div>
+<div class="card"><h2>📌 Next up</h2><div id="nextList"></div></div>
+<div class="card"><h2>📚 My Subjects</h2><div class="subjects" id="subjectChips"></div></div>
+</section>
+
+<section id="tasks" class="page">
+<div class="card"><h2 id="formTitle">➕ Add a task</h2><div class="form">
+<input id="taskInput" placeholder="Homework or study task...">
+<select id="subject"><option>Math</option><option>Science</option><option>English</option><option>History</option><option>Art</option><option>Other</option></select>
+<input id="due" type="date">
+<select id="priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select>
+<button class="primary" id="saveBtn" onclick="saveTask()">Add</button>
+</div><input id="search" style="margin-top:10px" placeholder="🔎 Search tasks..." oninput="renderTasks()"></div>
+<div class="card"><div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px"><button class="secondary" onclick="setFilter('all')">All</button><button class="secondary" onclick="setFilter('todo')">To do</button><button class="secondary" onclick="setFilter('done')">Completed</button><button class="danger" onclick="clearDone()">Clear completed</button></div><div id="taskList"></div></div>
+</section>
+
+<section id="calendar" class="page">
+<div class="card"><div class="calendarHeader"><div class="monthTitle" id="monthTitle"></div><div class="calBtns"><button onclick="changeMonth(-1)">‹</button><button onclick="goToday()">Today</button><button onclick="changeMonth(1)">›</button></div></div><div class="calendar" id="calendarGrid"></div></div>
+</section>
+
+<section id="notes" class="page">
+<div class="card"><h2>📝 Quick Notes</h2><input id="noteTitle" placeholder="Note title"><textarea id="noteText" style="margin-top:10px" placeholder="Write a study note, formula, idea, or reminder..."></textarea><button class="primary" style="margin-top:10px" onclick="addNote()">Save Note</button></div>
+<div class="card"><h2>📒 My Notes</h2><div class="notes" id="notesList"></div></div>
+</section>
+
+<section id="focus" class="page">
+<div class="card timer"><h2>⏱️ Focus Mode</h2><p class="meta">25 minutes of focus • 5 minute break</p><div class="time" id="timer">25:00</div><div class="timerBtns"><button class="primary" onclick="startTimer()">▶ Start</button><button class="secondary" onclick="pauseTimer()">⏸ Pause</button><button class="danger" onclick="resetTimer()">↻ Reset</button></div></div>
+<div class="card"><h2>🧠 Focus tips</h2><p>Choose one task, remove distractions, and focus until the timer ends.</p></div>
+</section>
+
+<section id="statsPage" class="page">
+<div class="card"><h2>📊 Study Statistics</h2><p class="meta">Completed tasks over the last 7 days.</p><div class="chart" id="chart"></div></div>
+<div class="grid2"><div class="card"><h2>🏅 Completion Rate</h2><div style="font-size:42px;font-weight:850" id="rate">0%</div><div class="progress"><div id="rateBar" style="width:0%"></div></div></div><div class="card"><h2>📈 Study Summary</h2><p id="summary"></p></div></div>
+</section>
+
+
+<section id="games" class="page">
+<div class="card">
+  <h2>🎮 StudySpark Game Center</h2>
+  <p class="meta">Learn, play, and earn points!</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="primary" onclick="startQuiz()">🧠 Quick Quiz</button>
+    <button class="secondary" onclick="startMath()">🔢 Math Sprint</button>
+    <button class="secondary" onclick="startWord()">🔤 Word Scramble</button>
+  </div>
+</div>
+
+<div class="card" id="gameArea">
+  <div class="empty">Choose a game above to start! 🚀</div>
+</div>
+</section>
+
+<section id="more" class="page">
+<div class="card"><h2>🏆 Achievements</h2><p class="meta">Keep going to unlock badges.</p><div class="badges" id="badges"></div></div>
+<div class="card"><h2>🎨 Theme</h2><button class="secondary" onclick="setTheme('#635bff')">💜 Purple</button> <button class="secondary" onclick="setTheme('#159a9c')">🌊 Teal</button> <button class="secondary" onclick="setTheme('#e85d75')">🌸 Pink</button> <button class="secondary" onclick="setTheme('#f39c12')">☀️ Orange</button></div>
+<div class="card"><h2>⚙️ Settings</h2><button class="secondary" onclick="toggleDark()">Toggle dark mode</button> <button class="danger" onclick="resetAll()">Reset all data</button></div>
+</section>
+</main>
+<footer>StudySpark V7 • Learn • Play • Grow 🚀</footer>
+</div>
+
+<script>
+let tasks=JSON.parse(localStorage.getItem('ss6_tasks')||'[]'),notes=JSON.parse(localStorage.getItem('ss6_notes')||'[]');
+let points=+localStorage.getItem('ss6_points')||0,streak=+localStorage.getItem('ss6_streak')||0,last=localStorage.getItem('ss6_last')||'';
+let filter='all',editing=null,timerSec=1500,timerInt=null,calDate=new Date();
+let gameScore=0,gameQuestionIndex=0,gameType='',currentAnswer=null,gameQuestions=[];
+const quotes=["Small steps today = big progress tomorrow. 🌟","You’ve got this! 💪","One task at a time. 🧠","Progress beats perfection. ✨","Your future self will thank you. 🚀"];
+
+function save(){localStorage.setItem('ss6_tasks',JSON.stringify(tasks));localStorage.setItem('ss6_notes',JSON.stringify(notes));localStorage.setItem('ss6_points',points);localStorage.setItem('ss6_streak',streak);localStorage.setItem('ss6_last',last)}
+function key(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]) )}
+function show(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');if(id==='calendar')renderCalendar();if(id==='statsPage')renderStats()}
+function enterApp(){document.getElementById('welcome').style.display='none';localStorage.setItem('ss6_seen','1')}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('ss6_dark',document.body.classList.contains('dark'));themeBtn.textContent=document.body.classList.contains('dark')?'☀️':'🌙'}
+function setTheme(c){document.documentElement.style.setProperty('--primary',c);localStorage.setItem('ss6_theme',c)}
+function saveTask(){let title=taskInput.value.trim();if(!title){alert('Please enter a task!');return}let data={title,subject:subject.value,due:due.value,priority:priority.value};if(editing){Object.assign(tasks.find(t=>t.id===editing),data);editing=null;saveBtn.textContent='Add';formTitle.textContent='➕ Add a task'}else tasks.push({...data,id:Date.now(),done:false,created:key()});taskInput.value='';due.value='';save();renderAll()}
+function toggleTask(id){let t=tasks.find(x=>x.id===id);if(!t)return;if(!t.done){t.done=true;points+=10;updateStreak()}else{t.done=false;points=Math.max(0,points-10)}save();renderAll()}
+function updateStreak(){let today=key();if(last===today)return;let d=new Date();d.setDate(d.getDate()-1);streak=last===key(d)?streak+1:1;last=today}
+function editTask(id){let t=tasks.find(x=>x.id===id);editing=id;taskInput.value=t.title;subject.value=t.subject;due.value=t.due;priority.value=t.priority;saveBtn.textContent='Save';formTitle.textContent='✏️ Edit task';window.scrollTo({top:0,behavior:'smooth'})}
+function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);save();renderAll()}
+function clearDone(){tasks=tasks.filter(x=>!x.done);save();renderAll()}
+function setFilter(x){filter=x;renderTasks()}
+function renderTasks(){let q=search.value.toLowerCase();let arr=tasks.filter(t=>(filter==='all'||(filter==='todo'&&!t.done)||(filter==='done'&&t.done))&&t.title.toLowerCase().includes(q));arr.sort((a,b)=>(a.done-b.done)||(a.due||'9999').localeCompare(b.due||'9999'));taskList.innerHTML=arr.length?arr.map(t=>`<div class="task"><button class="check ${t.done?'done':''}" onclick="toggleTask(${t.id})">${t.done?'✓':''}</button><div class="info"><div class="title ${t.done?'done':''}">${esc(t.title)}</div><div class="meta">${t.subject}${t.due?' • Due '+t.due:''} • <span class="priority ${t.priority}">${t.priority}</span></div></div><div class="actions"><button class="small" onclick="editTask(${t.id})">✏️ <span class="label">Edit</span></button><button class="small" onclick="deleteTask(${t.id})">🗑️</button></div></div>`).join(''):'<div class="empty">No tasks here yet. 🌱</div>'}
+function renderHome(){total.textContent=tasks.length;todo.textContent=tasks.filter(t=>!t.done).length;done.textContent=tasks.filter(t=>t.done).length;streakEl=streak;document.getElementById('streak').textContent=streak;points.textContent=points;let l=Math.floor(points/50)+1,n=['Starter','Learner','Focused','Achiever','Study Star','Study Master','Study Legend'];level.textContent=l;levelName.textContent=n[Math.min(l-1,n.length-1)];pointsText.textContent=`${points%50} / 50 points`;levelBar.style.width=(points%50)*2+'%';quote.textContent=quotes[Math.floor(Date.now()/86400000)%quotes.length];let today=key(),td=tasks.filter(t=>!t.done&&t.due===today);todayList.innerHTML=td.length?td.map(t=>`<div class="task"><div class="info"><b>${esc(t.title)}</b><div class="meta">${t.subject}</div></div></div>`).join(''):'<div class="empty">Nothing due today! 🎉</div>';let nx=tasks.filter(t=>!t.done&&t.due&&t.due>=today).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,5);nextList.innerHTML=nx.length?nx.map(t=>`<div class="task"><div class="info"><b>${esc(t.title)}</b><div class="meta">${t.subject} • ${t.due}</div></div><span class="priority ${t.priority}">${t.priority}</span></div>`).join(''):'<div class="empty">You’re all caught up! 🎉</div>';let h=new Date().getHours();greeting.textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+'! 👋';subjectChips.innerHTML=['Math','Science','English','History','Art','Other'].map(s=>`<span class="subjectChip">${s} • ${tasks.filter(t=>t.subject===s).length}</span>`).join('')}
+function renderCalendar(){let y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),start=first.getDay(),days=new Date(y,m+1,0).getDate(),prevDays=new Date(y,m,0).getDate();monthTitle.textContent=calDate.toLocaleDateString(undefined,{month:'long',year:'numeric'});let out=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`<div class="weekday">${x}</div>`).join('');for(let i=0;i<42;i++){let num=i-start+1,dayDate;if(num<1)dayDate=new Date(y,m-1,prevDays+num);else if(num>days)dayDate=new Date(y,m+1,num-days);else dayDate=new Date(y,m,num);let k=key(dayDate),other=dayDate.getMonth()!==m,arr=tasks.filter(t=>t.due===k);out+=`<div class="day ${other?'other':''} ${k===key()?'today':''}"><div class="dayNum">${dayDate.getDate()}</div>${arr.slice(0,3).map(t=>`<span class="dot ${t.done?'doneDot':''}">${esc(t.title)}</span>`).join('')}</div>`}calendarGrid.innerHTML=out}
+function changeMonth(n){calDate.setMonth(calDate.getMonth()+n);renderCalendar()}function goToday(){calDate=new Date();renderCalendar()}
+function addNote(){let title=noteTitle.value.trim(),text=noteText.value.trim();if(!title||!text){alert('Add a title and note text!');return}notes.unshift({id:Date.now(),title,text});noteTitle.value='';noteText.value='';save();renderNotes();renderBadges()}
+function deleteNote(id){notes=notes.filter(n=>n.id!==id);save();renderNotes();renderBadges()}
+function renderNotes(){notesList.innerHTML=notes.length?notes.map(n=>`<div class="note"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p><button class="small" style="margin-top:12px" onclick="deleteNote(${n.id})">🗑️ Delete</button></div>`).join(''):'<div class="empty">No notes yet. Write your first one! ✏️</div>'}
+function renderBadges(){let c=tasks.filter(t=>t.done).length,b=[['🌱','First Step',c>=1],['⭐','5 Tasks',c>=5],['🏅','10 Tasks',c>=10],['🔥','3 Day Streak',streak>=3],['💯','100 Points',points>=100],['🚀','250 Points',points>=250],['📝','First Note',notes.length>=1],['📚','25 Tasks',c>=25]];badges.innerHTML=b.map(x=>`<div class="badge ${x[2]?'unlocked':''}"><div class="emoji">${x[0]}</div><b>${x[1]}</b><div class="meta">${x[2]?'Unlocked!':'Locked'}</div></div>`).join('')}
+function renderStats(){let c=tasks.filter(t=>t.done).length,rate=tasks.length?Math.round(c/tasks.length*100):0;document.getElementById('rate').textContent=rate+'%';rateBar.style.width=rate+'%';summary.textContent=`You have completed ${c} of ${tasks.length} tasks and earned ${points} points. Your current study streak is ${streak} day${streak===1?'':'s'}.`;let out='';for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let k=key(d),num=tasks.filter(t=>t.done&&t.created===k).length;out+=`<div class="barWrap"><div class="barValue">${num}</div><div class="bar" style="height:${Math.min(100,Math.max(3,num*25))}%"></div><div class="barLabel">${d.toLocaleDateString(undefined,{weekday:'short'}).slice(0,2)}</div></div>`}chart.innerHTML=out}
+
+function addGamePoints(n){
+  points+=n; save(); renderHome(); renderBadges();
+}
+function startQuiz(){
+  gameType='quiz'; gameScore=0; gameQuestionIndex=0;
+  gameQuestions=[
+    {q:'What planet is known as the Red Planet?',o:['Earth','Mars','Jupiter','Venus'],a:'Mars'},
+    {q:'What is 12 × 8?',o:['86','96','108','88'],a:'96'},
+    {q:'Which gas do plants use during photosynthesis?',o:['Oxygen','Nitrogen','Carbon dioxide','Helium'],a:'Carbon dioxide'},
+    {q:'How many sides does a hexagon have?',o:['5','6','7','8'],a:'6'},
+    {q:'Which word is a noun?',o:['Quickly','Beautiful','Teacher','Run'],a:'Teacher'}
+  ];
+  renderGameQuestion();
+}
+function startMath(){
+  gameType='math'; gameScore=0; gameQuestionIndex=0; gameQuestions=[];
+  for(let i=0;i<8;i++){
+    let a=Math.floor(Math.random()*12)+2,b=Math.floor(Math.random()*12)+2;
+    gameQuestions.push({q:`${a} × ${b} = ?`,a:String(a*b)});
+  }
+  renderGameQuestion();
+}
+const words=[
+  ['TCAH','CHAT'],['NIALPMET','PLANET'],['CISENEC','SCIENCE'],
+  ['HTAM','MATH'],['YROTSIH','HISTORY'],['RTEACHER','TEACHER']
+];
+function startWord(){
+  gameType='word';gameScore=0;gameQuestionIndex=0;
+  gameQuestions=words.map(x=>({q:x[0],a:x[1]}));
+  renderGameQuestion();
+}
+function renderGameQuestion(){
+  if(gameQuestionIndex>=gameQuestions.length){finishGame();return}
+  let g=gameQuestions[gameQuestionIndex];
+  let options='';
+  if(gameType==='quiz'){
+    options=`<div class="gameOptions">${g.o.map(x=>`<button class="gameOption" onclick="answerGame('${x.replace(/'/g,"\\'")}')">${x}</button>`).join('')}</div>`;
+  }else{
+    options=`<input id="gameInput" placeholder="${gameType==='word'?'Unscramble the word':'Type your answer'}" onkeydown="if(event.key==='Enter') answerGame(document.getElementById('gameInput').value)"><button class="primary" style="margin-top:10px" onclick="answerGame(document.getElementById('gameInput').value)">Submit</button>`;
+  }
+  gameArea.innerHTML=`<div class="gameScore"><span>Question ${gameQuestionIndex+1}/${gameQuestions.length}</span><span>🏆 Score: ${gameScore}</span></div><div class="gameQuestion">${gameType==='word'?'Unscramble: '+g.q:g.q}</div>${options}`;
+}
+function answerGame(answer){
+  let g=gameQuestions[gameQuestionIndex];
+  let good=String(answer).trim().toLowerCase()===String(g.a).toLowerCase();
+  if(good){gameScore++;addGamePoints(5)}
+  gameArea.innerHTML=`<div class="gameScore"><span>${good?'🎉 Correct!':'💡 Not quite!'}</span><span>🏆 Score: ${gameScore}</span></div><div class="feedback ${good?'correct':'wrong'}">${good?'Great job! +5 StudySpark points!':'The answer was: '+esc(g.a)}</div><button class="primary" style="margin-top:12px" onclick="gameQuestionIndex++;renderGameQuestion()">${gameQuestionIndex+1<gameQuestions.length?'Next Question':'See Results'}</button>`;
+}
+function finishGame(){
+  let bonus=gameScore>=gameQuestions.length?20:10;
+  addGamePoints(bonus);
+  gameArea.innerHTML=`<div class="empty"><div style="font-size:45px">🏆</div><h2>Game Complete!</h2><p>You scored <b>${gameScore}/${gameQuestions.length}</b>.</p><p>You earned a ${bonus}-point completion bonus!</p><button class="primary" onclick="startQuiz()">Play Again</button></div>`;
+}
+
+function renderAll(){renderTasks();renderHome();renderNotes();renderBadges();renderCalendar();renderStats()}
+function resetAll(){if(confirm('Reset all StudySpark V6 data?')){['ss6_tasks','ss6_notes','ss6_points','ss6_streak','ss6_last'].forEach(k=>localStorage.removeItem(k));location.reload()}}
+function updateTimer(){timer.textContent=`${String(Math.floor(timerSec/60)).padStart(2,'0')}:${String(timerSec%60).padStart(2,'0')}`;if(timerSec===0){clearInterval(timerInt);timerInt=null;points+=5;save();renderAll();alert('Focus session complete! 🎉 +5 points')}}
+function startTimer(){if(timerInt)return;timerInt=setInterval(()=>{if(timerSec>0){timerSec--;updateTimer()}},1000)}
+function pauseTimer(){clearInterval(timerInt);timerInt=null}function resetTimer(){pauseTimer();timerSec=1500;updateTimer()}
+if(localStorage.getItem('ss6_seen')==='1')welcome.style.display='none';if(localStorage.getItem('ss6_dark')==='true'){document.body.classList.add('dark');themeBtn.textContent='☀️'}if(localStorage.getItem('ss6_theme'))setTheme(localStorage.getItem('ss6_theme'));
+renderAll();updateTimer();
+</script>
+</body>
+</html>
